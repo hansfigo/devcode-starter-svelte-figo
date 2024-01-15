@@ -1,12 +1,12 @@
 <script>
-  import { afterUpdate } from 'svelte';
-  import { addNewContact, updateContactInfo } from '../services/index';
+  import { afterUpdate } from "svelte";
+  import { addNewContact, updateContactInfo } from "../services/index";
 
   export let handleGetContacts, handleResetSelected, selectedContact;
 
   // TODO: Uncomment baris kode di bawah untuk membuat regex yang akan membantu memvalidasi format nomor telepon dan email
-  // const regexPhoneNumber = /^[0-9]*$/;
-  // const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const regexPhoneNumber = /^[0-9]*$/;
+  const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
   // TODO:
   // 1. Buat sebuah fungsi yang akan memvalidasi apakah format dari nomor telepon dan email yang dimasukkan sudah benar atau belum
@@ -18,7 +18,7 @@
     full_name: "",
     phone_number: "",
     email: "",
-  }
+  };
   let selectedId = 0;
 
   function onSetSelectedContact() {
@@ -31,7 +31,7 @@
   }
 
   function onInputChanged(type, value) {
-    switch(type) {
+    switch (type) {
       case "email":
         input.email = value;
         break;
@@ -49,26 +49,36 @@
       full_name: "",
       phone_number: "",
       email: "",
-    }
+    };
     selectedId = 0;
   }
 
   async function handleSubmit() {
+    if (!regexPhoneNumber.test(input.phone_number)) {
+      alert("Nomor telepon hanya dapat berupa angka.");
+      return;
+    }
+
+    if (!regexEmail.test(input.email)) {
+      alert("Format email tidak sesuai.");
+      return;
+    }
+
     if (selectedId !== 0) {
       await updateContactInfo({
         id: selectedId,
         data: {
           full_name: input.full_name,
           phone_number: input.phone_number,
-          email: input.email
-        }
-      })
+          email: input.email,
+        },
+      });
     } else {
       await addNewContact({
         full_name: input.full_name,
         phone_number: input.phone_number,
-        email: input.email
-      })
+        email: input.email,
+      });
     }
 
     handleGetContacts();
@@ -80,7 +90,7 @@
     if (selectedId === 0) {
       onSetSelectedContact();
     }
-  })
+  });
 </script>
 
 <div class="input-contact__form-container">
@@ -94,7 +104,7 @@
         name="nama"
         bind:value={input.full_name}
         placeholder="Masukkan Nama Lengkap"
-        on:change={e => onInputChanged('full_name', e.target.value)}
+        on:change={(e) => onInputChanged("full_name", e.target.value)}
       />
     </div>
     <label for="telepon">No. Telepon</label>
@@ -105,7 +115,7 @@
         name="telepon"
         bind:value={input.phone_number}
         placeholder="Masukkan Nomor Telepon"
-        on:change={e => onInputChanged('phone_number', e.target.value)}
+        on:change={(e) => onInputChanged("phone_number", e.target.value)}
       />
     </div>
     <label for="email">Email</label>
@@ -116,12 +126,12 @@
         name="email"
         bind:value={input.email}
         placeholder="Masukkan Email"
-        on:change={e => onInputChanged('email', e.target.value)}
+        on:change={(e) => onInputChanged("email", e.target.value)}
       />
     </div>
     <button
       data-cy="btn-submit"
-      disabled='{!input.full_name || !input.phone_number || !input.email}'
+      disabled={!input.full_name || !input.phone_number || !input.email}
       on:click={handleSubmit}
     >
       Simpan
