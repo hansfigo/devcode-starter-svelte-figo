@@ -2,8 +2,8 @@
   import { onMount } from 'svelte';
   import { getAllContactsData } from '../../services/index';
 
-  import ContactItem from '../../components/ContactItem.svelte';
   import InputContactForm from '../../components/InputContactForm.svelte';
+  import ContactItem from '../../components/ContactItem.svelte';
 
   let contactsList = []
   let selectedContact = {
@@ -39,7 +39,6 @@
 <div>
   <div class="home">
     <div class="container">
-      <!-- TODO: Tambahkan selectedContact sebagai props pada komponen InputContactForm -->
       <InputContactForm handleGetContacts={handleGetContactsData} handleResetSelected={handleResetSelectedContact} selectedContact={selectedContact} />
       <div class="contact-list__container">
         {#each contactsList as contact}

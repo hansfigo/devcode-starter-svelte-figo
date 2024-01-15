@@ -1,25 +1,20 @@
 <script>
-  import { deleteContact } from "../services/index";
+  import { deleteContact } from '../services/index';
 
   export let id = 0;
-  export let full_name = "";
-  export let email = "";
-  export let phone_number = "";
+  export let full_name = '';
+  export let email = '';
+  export let phone_number = '';
   export let handleGetContacts, handleSetSelected;
 
-  // TODO:
-  // 1. Buat sebuah fungsi untuk men-dispatch fungsi menghapus kontak yang sudah dibuat sebelumnya di services/index.js dan memanggil fungsi handleGetContacts untuk refresh data kontak
-  const handleDeleteContact = async () => {
-    await deleteContact(id);
+  function handleEditContact() {
+    handleSetSelected(id, full_name, phone_number, email);
+  };
 
-    await handleGetContacts();
+  async function handleDeleteContact() {
+    await deleteContact(id);
+    handleGetContacts();
   };
-  // 2. Buat button edit dengan properti data-cy nya btn-edit, class nya contact-item__button dan contact-item__edit-button serta menjalankan fungsi handleSetSelected ketika di klik
-  const handleEditContact = async () => {
-    handleSetSelected(id, full_name, email, phone_number);
-  };
-  // 3. Buat button hapus dengan properti data-cy nya btn-delete, class nya contact-item__button dan contact-item__delete-button serta menjalankan fungsi menghapus kontak yang sudah dibuat sebelumnya ketika di klik
-  // 4. Kedua button tersebut dibuat di dalam elemen div dengan class contact-item__button-wrapper
 </script>
 
 <div data-cy="item-card" class="contact-item__wrapper">
@@ -27,20 +22,28 @@
     <p data-cy="item-name" class="contact-item__name">
       {full_name}
     </p>
-    <div class="contact-item__button-wrapper"></div>
+    <div class="contact-item__button-wrapper">
+      <button
+        data-cy="btn-edit"
+        class="contact-item__button contact-item__edit-button"
+        on:click={handleEditContact}
+      >
+        Edit
+      </button>
+      <button
+        data-cy="btn-delete"
+        class="contact-item__button contact-item__delete-button"
+        on:click={handleDeleteContact}
+      >
+        Hapus
+      </button>
+    </div>
   </div>
   <div class="contact-item__second-row">
     <p class="contact-item__phone-email">
-      <span data-cy="item-phone">{phone_number}</span> |
+      <span data-cy="item-phone">{phone_number}</span> | 
       <span data-cy="item-email">{email}</span>
     </p>
-  </div>
-  <div class="contact-item__button">
-    <button data-cy="btn-edit" on:click={() => handleEditContact()}>edit</button
-    >
-    <button data-cy="btn-delete" on:click={() => handleDeleteContact()}
-      >delete</button
-    >
   </div>
 </div>
 

@@ -1,14 +1,24 @@
 <script>
-  import { afterUpdate } from "svelte";
-  import { addNewContact, editContact } from "../services/index";
+  import { afterUpdate } from 'svelte';
+  import { addNewContact, updateContactInfo } from '../services/index';
 
   export let handleGetContacts, handleResetSelected, selectedContact;
+
+  // TODO: Uncomment baris kode di bawah untuk membuat regex yang akan membantu memvalidasi format nomor telepon dan email
+  // const regexPhoneNumber = /^[0-9]*$/;
+  // const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+  // TODO:
+  // 1. Buat sebuah fungsi yang akan memvalidasi apakah format dari nomor telepon dan email yang dimasukkan sudah benar atau belum
+  // 2. Jika format nomor telepon salah, maka tampilkan sebuah alert dengan isi pesan "Nomor telepon hanya dapat berupa angka."
+  // 3. Jika format email salah, maka tampilkan sebuah alert dengan isi pesan "Format email tidak sesuai."
+  // 4. Jika format nomor telepon dan email sudah benar, maka lanjutkan proses untuk membuat kontak baru atau meng-update kontak
 
   let input = {
     full_name: "",
     phone_number: "",
     email: "",
-  };
+  }
   let selectedId = 0;
 
   function onSetSelectedContact() {
@@ -21,7 +31,7 @@
   }
 
   function onInputChanged(type, value) {
-    switch (type) {
+    switch(type) {
       case "email":
         input.email = value;
         break;
@@ -39,40 +49,38 @@
       full_name: "",
       phone_number: "",
       email: "",
-    };
+    }
     selectedId = 0;
   }
 
-  // TODO:
-  // 1. Buat metode untuk dispatch fungsi ubah data kontak yang sudah dibuat sebelumnya di service/index.js di dalam fungsi handleSubmit
-  // 2. Pada fungsi handleSubmit, buat percabangan dengan kondisi ketika nilai dari id lebih dari 0, maka jalankan fungsi ubah data kontak dan untuk sebaliknya, maka jalankan fungsi untuk tambah kontak baru
-
   async function handleSubmit() {
-    const payload = {
-      full_name: input.full_name,
-      phone_number: input.phone_number,
-      email: input.email,
-    };
-    if (selectedId > 0) {
-      console.log("Edit");
-      await editContact(selectedId, payload);
-
-      handleGetContacts();
+    if (selectedId !== 0) {
+      await updateContactInfo({
+        id: selectedId,
+        data: {
+          full_name: input.full_name,
+          phone_number: input.phone_number,
+          email: input.email
+        }
+      })
     } else {
-      console.log("New");
-      await addNewContact(payload);
-
-      handleGetContacts();
-      resetInputValue();
-      handleResetSelected();
+      await addNewContact({
+        full_name: input.full_name,
+        phone_number: input.phone_number,
+        email: input.email
+      })
     }
+
+    handleGetContacts();
+    resetInputValue();
+    handleResetSelected();
   }
 
   afterUpdate(() => {
     if (selectedId === 0) {
       onSetSelectedContact();
     }
-  });
+  })
 </script>
 
 <div class="input-contact__form-container">
@@ -86,7 +94,7 @@
         name="nama"
         bind:value={input.full_name}
         placeholder="Masukkan Nama Lengkap"
-        on:change={(e) => onInputChanged("full_name", e.target.value)}
+        on:change={e => onInputChanged('full_name', e.target.value)}
       />
     </div>
     <label for="telepon">No. Telepon</label>
@@ -97,7 +105,7 @@
         name="telepon"
         bind:value={input.phone_number}
         placeholder="Masukkan Nomor Telepon"
-        on:change={(e) => onInputChanged("phone_number", e.target.value)}
+        on:change={e => onInputChanged('phone_number', e.target.value)}
       />
     </div>
     <label for="email">Email</label>
@@ -108,12 +116,12 @@
         name="email"
         bind:value={input.email}
         placeholder="Masukkan Email"
-        on:change={(e) => onInputChanged("email", e.target.value)}
+        on:change={e => onInputChanged('email', e.target.value)}
       />
     </div>
     <button
       data-cy="btn-submit"
-      disabled={!input.full_name || !input.phone_number || !input.email}
+      disabled='{!input.full_name || !input.phone_number || !input.email}'
       on:click={handleSubmit}
     >
       Simpan
