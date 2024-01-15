@@ -1,5 +1,5 @@
 <script>
-  import devcodeLogo from '$lib/assets/devcode-logo.png'
+  import devcodeLogo from "$lib/assets/devcode-logo.png";
 </script>
 
 <div class="hello">
@@ -8,9 +8,7 @@
     <h1>I'm ready for the next challenge!</h1>
   </div>
   <div data-cy="router-button">
-    <a href="/contacts" class="router__btn">
-      Level Selanjutnya
-    </a>
+    <a href="/contacts" class="router__btn"> Level Selanjutnya </a>
   </div>
 </div>
 
