@@ -1,8 +1,8 @@
-# Devcode Starter using Svelte Level 1
+# Devcode Starter using Svelte Level 2
 
 ## Hasil Akhir yang Diharapkan
 
-Peserta dapat menampilkan Halaman Hello yang berisi Logo Devcode dan Teks `I'm ready for the next challenge!`.
+Peserta dapat mengambil data kontak dari api dan menampilkannya dalam bentuk list pada halaman contacts
 
 ## Setup Environment
 
@@ -15,10 +15,12 @@ Peserta dapat menampilkan Halaman Hello yang berisi Logo Devcode dan Teks `I'm r
 
 ## Instruksi Pengerjaan
 
-1. Selesaikan semua TODO yang terdapat pada file `components/HelloWorld.svelte`, `components/WelcomeCard.svelte`
+1. Selesaikan semua TODO yang terdapat pada file `services/index.js`, `routes/contacts/+page.svelte`
 2. Buat online repository di Github (Jika belum memiliki akun Github, silahkan daftar [disini](https://github.com/signup))
 3. Push project ke online repository yang sudah anda buat
 4. Deploy project ini ke Hosting yang anda miliki atau bisa juga menggunakan layanan hosting gratis seperti Vercel (Jika belum memiliki akun Vercel, silahkan daftar [disini](https://vercel.com/signup))
+
+Untuk Dokumentasi API yang digunakan pada challenge ini dapat diakses [disini](https://documenter.getpostman.com/view/6584319/2s8Yt1rUtN).
 
 ## Teknologi yang Digunakan
 
