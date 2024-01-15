@@ -8,7 +8,7 @@
   <img data-cy="devcode-logo" src={devcodeLogo} alt="devcode logo" />
   <div data-cy="devcode-title">
     <!-- TODO: Tambahkan elemen heading 1 di bawah ini dengan berisi kalimat I'm ready for the next challenge! -->
-    <h1>I'm ready for the next challenge</h1>
+    <h1>I'm ready for the next challenge!</h1>
   </div>
 </div>
 
