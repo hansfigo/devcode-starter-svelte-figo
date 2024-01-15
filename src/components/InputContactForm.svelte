@@ -1,15 +1,24 @@
 <script>
-  // TODO: Uncomment baris kode di bawah untuk meng-import fungsi addNewContact dari services/index.js
-  import { addNewContact } from "../services/index";
+  import { afterUpdate } from "svelte";
+  import { addNewContact, editContact } from "../services/index";
 
-  // TODO: Uncomment baris kode di bawah untuk mendapatkan fungsi handleGetContacts dari props
-  export let handleGetContacts;
+  export let handleGetContacts, handleResetSelected, selectedContact;
 
   let input = {
     full_name: "",
     phone_number: "",
     email: "",
   };
+  let selectedId = 0;
+
+  function onSetSelectedContact() {
+    if (selectedContact.id !== 0) {
+      selectedId = selectedContact.id;
+      input.full_name = selectedContact.full_name;
+      input.phone_number = selectedContact.phone_number;
+      input.email = selectedContact.email;
+    }
+  }
 
   function onInputChanged(type, value) {
     switch (type) {
@@ -31,19 +40,39 @@
       phone_number: "",
       email: "",
     };
+    selectedId = 0;
   }
 
-  // TODO: Uncomment baris kode di bawah untuk memanggil fungsi mengirim data kontak baru yang sudah diimport sebelumnya dari services/index.js lalu panggil fungsi untuk mengambil semua data kontak dari api dan mereset value yang ada di setiap input field
+  // TODO:
+  // 1. Buat metode untuk dispatch fungsi ubah data kontak yang sudah dibuat sebelumnya di service/index.js di dalam fungsi handleSubmit
+  // 2. Pada fungsi handleSubmit, buat percabangan dengan kondisi ketika nilai dari id lebih dari 0, maka jalankan fungsi ubah data kontak dan untuk sebaliknya, maka jalankan fungsi untuk tambah kontak baru
+
   async function handleSubmit() {
-    await addNewContact({
+    const payload = {
       full_name: input.full_name,
       phone_number: input.phone_number,
       email: input.email,
-    });
+    };
+    if (selectedId > 0) {
+      console.log("Edit");
+      await editContact(selectedId, payload);
 
-    handleGetContacts();
-    resetInputValue();
+      handleGetContacts();
+    } else {
+      console.log("New");
+      await addNewContact(payload);
+
+      handleGetContacts();
+      resetInputValue();
+      handleResetSelected();
+    }
   }
+
+  afterUpdate(() => {
+    if (selectedId === 0) {
+      onSetSelectedContact();
+    }
+  });
 </script>
 
 <div class="input-contact__form-container">
